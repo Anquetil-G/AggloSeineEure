@@ -1,0 +1,6 @@
+<h2>{% if user %}Modifier{% else %}Créer{% endif %} un utilisateur</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form>

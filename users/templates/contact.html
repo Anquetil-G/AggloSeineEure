@@ -1,0 +1,31 @@
+{% if user.is_authenticated %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+    <a href="{% url 'commune_menu' department.pk commune.pk %}" class="classic_come_back classic_button">Retour - {{ commune.name }}</a>
+    <div class="classic_card_container">
+        <h1>{{ contact.full_name }}</h1>
+        <ul class="classic_ul">
+            <li class="classic_ul_li"><p><span>Adresse email :</span> {{ contact.email }}</p></li>
+            <li class="classic_ul_li"><p><span>Numéro de téléphone :</span> {{ contact.phone_number }}</p></li>
+            {% if contact.observation %} 
+                <li class="classic_ul_li contact_ul_li_notes"><p><span>Observation :</span> {{ contact.observation }}</p></li>
+            {% endif %}
+            {% if contact.reminder %} 
+                <li class="classic_ul_li contact_ul_li_notes"><p><span>Rappel :</span> {{ contact.reminder }}</p></li>
+            {% endif %}
+            {% if contact.document %} 
+                <li class="classic_ul_li contact_ul_li_notes"><p><span>Document :</span> <a href="{{ contact.document.url }}" target="_blank" >{{ contact.document }}</a></p></li>
+            {% endif %}
+        </ul>
+        {% if user.rank == "admin_global" or administrated_department or administrated_commune %}
+            <div class="contact_edit_container">
+                <a href="{% url 'edit' 'contact' contact.pk %}" class="classic_button">Modifier</a><a href="{% url 'delete' 'contact' contact.pk %}" class="classic_button delete_button">Supprimer</a>
+            </div>
+        {% else %}
+            <div class="contact_edit_container">
+                <a href="{% url 'edit' 'contact' contact.pk %}" class="classic_button">Modifier</a>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

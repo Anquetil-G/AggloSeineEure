@@ -1,0 +1,11 @@
+<h2>Utilisateurs</h2>
+<a href="{% url 'create_user' %}">Ajouter un utilisateur</a>
+<ul>
+    {% for user in users %}
+        <li>
+            {{ user.username }} - {{ user.email }} - {{ user.rank }}
+            <a href="{% url 'edit_user' user.pk %}">Modifier</a>
+            <a href="{% url 'delete_user' user.pk %}">Supprimer</a>
+        </li>
+    {% endfor %}
+</ul>

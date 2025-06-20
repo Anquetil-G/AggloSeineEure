@@ -1,0 +1,444 @@
+/* -------------------------------- RESET CSS ------------------------------- */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a {
+	display: inline-block;
+}
+
+/* --------------------------------- GLOBAL --------------------------------- */
+
+@font-face {
+	font-family: 'Poppins';
+	src: url('./Poppins/Poppins-Regular.ttf') format('truetype')
+}
+:root {
+	--color1: #212851;
+	--color2: #3ca9a4;
+	--color3: #1a1a1b;
+	--color4: #f1f1f5;
+	--color5:#000000;
+	--color6:#d4334c;
+	--transition_hover: 0.15s;
+}
+body.no_margin {
+    margin: 0;
+}
+body, * {
+	font-family: 'Poppins';
+}
+body { 
+	margin: 30px; 
+	padding: 0; 
+	background-color: #f4f4f4; 
+	color: #333; 
+}
+h1, h2, h3 { 
+	color: var(--color3);
+	overflow-wrap: break-word;
+    word-break: break-word;
+}
+h1 {
+	font-size: 2.2rem;
+	margin-bottom: 20px;
+}
+h2 {
+	font-size: 1.6rem;
+	margin-bottom: 25px;
+}
+h3 {
+	font-size: 1.2rem;
+	margin-bottom: 25px;
+}
+a { 
+	color: var(--color1); 
+	text-decoration: none; 
+}
+a:hover { 
+	text-decoration: underline;
+	color: var(--color2);
+	transition: var(--transition_hover);
+}
+.classic_button {
+	display: inline-block;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: 1rem;
+	line-height: 1;
+	box-sizing: border-box;
+	text-align: center;
+	text-decoration: none;
+	height: fit-content;
+	transition: var(--transition_hover);
+	background-color: var(--color1); 
+	border: 3px solid var(--color1); 
+	color: white;
+}
+.classic_button:hover {
+	background-color: var(--color2); 
+	border: 3px solid var(--color2); 
+	color: white;
+}
+.classic_card_container {
+	background: #fff;
+	padding: 20px;
+	margin-bottom: 30px;
+	border-radius: 8px; 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+.classic_ul {
+	list-style-type: none; 
+	padding: 0;
+	/* margin-bottom: 20px; */
+}
+.classic_ul_li span {
+	color: var(--color5);
+}
+.classic_ul_li {
+	overflow-wrap: break-word;
+	word-break: break-word;
+	padding: 13px; 
+	margin: 8px 0; 
+	background: var(--color4); 
+	border-radius: 4px; 
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #525252;
+}
+.classic_ul_li_edit_links {
+	min-width: max-content;
+	display: flex;
+	gap: 12px;
+}
+.add_link {
+	margin-top: 20px;
+}
+.classic_come_back {
+	padding: 4px 8px;
+	margin-bottom: 10px;
+	font-size: 0.8rem;
+	color: #efefef;
+	background-color: #616370;
+    border: 3px solid #616370;
+}
+.classic_middle_card_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+.classic_middle_card {
+    margin-bottom: 0;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	max-width: 500px;
+}
+.classic_form p {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+.classic_form p a {
+	text-decoration: underline;
+	margin-bottom: 15px;
+}
+.classic_form p input[type="checkbox"][name="document-clear"] {
+	display: none;
+}
+.classic_form p label[for="document-clear_id"] {
+	display: none;
+}
+.classic_form p > input[type="file"]::before {
+    content: "Change:";
+    display: none;
+}
+.classic_form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color5);
+}
+.classic_form input, .classic_form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.classic_form textarea {
+	resize: vertical;
+	height: 70px;
+}
+.classic_form .helptext {
+    font-size: 0.8rem;
+    color: #666;
+    display: block;
+    margin-top: 0.25rem;
+}
+.classic_middle_card_form ul {
+    text-align: left;
+    margin-bottom: 1.5rem;
+    list-style-type: none;
+    padding: 0;
+}
+.classic_middle_card_form ul li {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+.classic_middle_card_form ul.errorlist li {
+    font-size: 0.8rem;
+    color: var(--color6);
+    margin-bottom: 0.25rem;
+}
+.classic_button_2 {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--color1);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition_hover);
+}
+.classic_button_2:hover {
+    background-color: var(--color2);
+}
+.classic_link_2 {
+    display: block;
+    margin-top: 1.5rem;
+    color: var(--color1);
+    text-decoration: none;
+}
+.classic_link_2:hover {
+    text-decoration: underline;
+    color: var(--color2);
+}
+
+/* ------------------------- HOME & MENUS & CONTACT ------------------------- */
+
+header {
+	margin-bottom: 30px;
+}
+.account_container p {
+	overflow-wrap: break-word;
+    word-break: break-word;
+	margin: 10px 0;
+	color: #484848;
+}
+.account_container p span {
+	color: var(--color5);
+}
+.account_container .links {
+	margin-top: 30px;
+	display: flex;
+	gap: 20px;
+}
+.account_container .links button {
+	color: var(--color1);
+	border: 3px solid var(--color1); 
+	background-color: transparent;
+}
+.account_container .links button:hover {
+	text-decoration: underline;
+	color: var(--color2);
+	border: 3px solid var(--color2); 
+	background-color: transparent;
+}
+.contact_ul_li_notes {
+	white-space: pre-line;
+}
+.contact_edit_container {
+	margin-top: 20px;
+	display: flex;
+	gap: 20px;
+}
+.contact_edit_container .delete_button {
+	color: var(--color1);
+	border: 3px solid var(--color1); 
+	background-color: transparent;
+}
+.contact_edit_container .delete_button:hover {
+	color: var(--color2);
+	border: 3px solid var(--color2); 
+	background-color: transparent;
+}
+
+/* -------------------------- LOGIN & REGISTER HOME ------------------------- */
+
+.home_no_connexion {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.home_no_connexion .head {
+	margin-bottom: 50px;
+	text-align: center;
+	max-width: 450px;
+}
+.home_no_connexion h1 {
+	margin-bottom: 20px;
+	font-size: 2.8rem;
+	font-weight: 600;
+}
+.home_no_connexion .links_connexion {
+	display: flex;
+	gap: 20px;
+}
+.home_no_connexion .links_connexion .button_register {
+	color: var(--color1);
+	border: 3px solid var(--color1); 
+	background-color: transparent;
+}
+.home_no_connexion .links_connexion .button_register:hover {
+	color: var(--color2);
+	border: 3px solid var(--color2); 
+	background-color: transparent;
+}
+
+/* ------------------------------ MEDIA SCREEN ------------------------------ */
+
+@media (max-width: 1024px) {
+    .classic_middle_card {
+        padding: 1.5rem;
+    }
+}
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    .classic_middle_card_form,
+    .classic_card_container,
+    .classic_middle_card {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+	.classic_middle_card {
+		margin: 1rem;
+	}
+
+    .contact_edit_container {
+        flex-direction: column;
+    }
+
+    .account_container .links {
+        flex-direction: column;
+    }
+
+    .home_no_connexion .links_connexion {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .classic_button,
+    .classic_button_2,
+    .classic_come_back {
+        width: 100%;
+        text-align: center;
+    }
+}
+@media (max-width: 480px) {
+    body {
+        margin: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+	header {
+		margin-bottom: 1rem;
+	}
+	header p {
+		font-size: 0.9rem;
+	}
+
+	.classic_ul_li {
+		font-size: 0.9rem;
+	}
+	.classic_ul_li_edit_links {
+		font-size: 0.8rem;
+		gap: 6px;
+	}
+
+    .classic_card_container,
+    .classic_middle_card {
+        padding: 1rem;
+    }
+
+    .classic_form input,
+    .classic_form textarea {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .classic_button,
+    .classic_button_2 {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+}

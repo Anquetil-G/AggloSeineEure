@@ -1,0 +1,11 @@
+<h2>Communes</h2>
+<a href="{% url 'create_commune' %}">Ajouter une commune</a>
+<ul>
+    {% for commune in communes %}
+        <li>
+            {{ commune.name }}
+            <a href="{% url 'edit_commune' commune.pk %}">Modifier</a>
+            <a href="{% url 'delete_commune' commune.pk %}">Supprimer</a>
+        </li>
+    {% endfor %}
+</ul>

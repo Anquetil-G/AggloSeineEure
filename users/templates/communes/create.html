@@ -1,0 +1,6 @@
+<h2>{% if commune %}Modifier{% else %}Créer{% endif %} une commune</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form>

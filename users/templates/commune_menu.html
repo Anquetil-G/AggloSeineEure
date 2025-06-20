@@ -1,0 +1,53 @@
+{% if user.is_authenticated %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+    <a href="{% url 'department_menu' department.pk %}" class="classic_come_back classic_button">Retour - {{ department.name }}</a>
+    <div class="classic_card_container">
+        <h1>Commune {{ commune.name }}</h1>
+        <h2>Liste des contact de la commune</h2>
+        {% if not contacts %}
+            <p>Aucun contact dans cette commune</p>
+        {% endif %}
+        {% if user.rank == "admin_global" or administrated_department or administrated_commune %}
+            <ul class="classic_ul" id="admin_contacts_list">
+            {% for contact in contacts %}
+                <li class="classic_ul_li">
+                    <a href="{% url 'contact' department.pk commune.pk contact.pk %}">{{ contact.full_name }} 👑</a>
+                    <div class="classic_ul_li_edit_links">
+                        <a href="{% url 'edit' 'contact' contact.pk %}">Modifier</a>
+                        <a href="{% url 'delete' 'contact' contact.pk %}">Supprimer</a>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+            <a href="{% url 'create_with_parent' 'contact' commune.pk 'commune' commune.name %}" class="add_link classic_button">Ajouter un contact</a>
+        {% endif %}
+            <ul class="classic_ul" id="all_contacts_list">
+            {% for contact in contacts %}
+                <li class="classic_ul_li">
+                    <a href="{% url 'contact' department.pk commune.pk contact.pk %}">{{ contact.full_name }}</a>
+                    <div class="classic_ul_li_edit_links">
+                        <a href="{% url 'edit' 'contact' contact.pk %}">Modifier</a>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const seen = new Map();
+        document.querySelectorAll("#admin_contacts_list .classic_ul_li a").forEach(link => {
+            const name = link.textContent.replace("👑", "").trim();
+            seen.set(name, true);
+        });
+        document.querySelectorAll("#all_contacts_list .classic_ul_li a").forEach(link => {
+            const name = link.textContent.trim();
+            if (seen.has(name)) {
+                link.parentElement.remove();
+            }
+        });
+    });
+    </script>
+{% endif %}

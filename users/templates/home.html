@@ -1,0 +1,88 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% load static %}
+<link rel="stylesheet" href="{% static 'users/style.css' %}">
+{% if user.is_authenticated %}
+    <header>
+        <h1>Nom de l'app</h1>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam debitis quod fugit rerum illo delectus exercitationem ea beatae expedita ipsam!</p>
+    </header>
+    <div class="departments_container classic_card_container">
+        {% if user.rank == "admin_global" %}
+            <h2>Liste des départements</h2>
+            <ul class="classic_ul" id="admin_departments_list">
+            {% for department in departments|dictsort:"name" %}
+                <li class="classic_ul_li">
+                    <a href="{% url 'department_menu' department.pk %}">{{ department.name }} 👑</a>
+                    <div class="edit_links classic_ul_li_edit_links">
+                        <a href="{% url 'edit' 'department' department.pk %}">Modifier</a>
+                        <a href="{% url 'delete' 'department' department.pk %}">Supprimer</a>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+            <a href="{% url 'create' 'department' %}" class="add_link classic_button">Ajouter un département</a>
+        {% elif user.rank == "user" or user.rank == "admin_commune" or user.rank == "admin_department" %}
+            <h2>Liste des départements accessibles par vous</h2>
+            <ul class="classic_ul" id="admin_departments_list">
+            {% for department in user.administrated_departments.all|dictsort:"name" %}
+                <li class="classic_ul_li">
+                    <a href="{% url 'department_menu' department.pk %}">{{ department.name }} 👑</a>
+                    <div class="edit_links classic_ul_li_edit_links">
+                        <a href="{% url 'edit' 'department' department.pk %}">Modifier</a>
+                        <a href="{% url 'delete' 'department' department.pk %}">Supprimer</a>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+            <ul class="classic_ul" id="all_departments_list">
+            {% for department in user.accessible_departments.all|dictsort:"name" %}
+                <li class="classic_ul_li"><a href="{% url 'department_menu' department.pk %}">{{ department.name }}</a></li>
+            {% empty %}
+                <li>Aucun département accessible</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        <!-- Demande pour accéder à un département ? -->
+    </div>
+    <div class="account_container classic_card_container">
+        <h3>{{ user.username }}</h3>
+        <p><span>Rang d'administration :</span> {{ user.rank }}</p>
+        <p><span>Email :</span> {{ user.email }}</p>
+        <p><span>Numéro de téléphone :</span> {{ user.phone_number }}</p>
+        <div class="links">
+            <a href="{% url 'edit_account' user.pk %}" class="classic_button">Modifier les informations</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="classic_button">Se déconnecter</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const seen = new Set();
+        document.querySelectorAll("#admin_departments_list .classic_ul_li a").forEach(link => {
+            const name = link.textContent.replace("👑", "").trim();
+            seen.add(name);
+        });
+        document.querySelectorAll("#all_departments_list .classic_ul_li a").forEach(link => {
+            const name = link.textContent.trim();
+            if (seen.has(name)) {
+                link.parentElement.remove();
+            }
+        });
+    });
+    </script>
+
+{% else %}
+    <div class="home_no_connexion">
+        <div class="head">
+            <h1>Nom de l'App</h1>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Harum cum saepe eaque ipsam.</p>
+        </div>
+        <div class="links_connexion">
+            <a href="{% url 'login' %}" class="classic_button">Se connecter</a>
+            <a href="{% url 'register' %}" class="classic_button button_register">Créer un compte</a>
+        </div>
+    </div>
+{% endif %}

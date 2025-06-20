@@ -1,0 +1,16 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% load static %}
+<link rel="stylesheet" href="{% static 'users/style.css' %}">
+<body class="no_margin">
+    <div class="classic_middle_card_container">
+        <div class="classic_middle_card classic_middle_card_form">
+            <h2>Connexion</h2>
+            <form method="post" class="classic_form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="classic_button_2">Se connecter</button>
+            </form>
+            <a href="{% url 'register' %}" class="classic_link_2">Pas de compte ? Créer un compte</a>
+        </div>
+    </div>
+</body>
