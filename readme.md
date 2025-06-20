@@ -2,7 +2,7 @@
 
 ---
 
-## 📦 Commandes DEV utiles
+## 🛠️ Commandes DEV utiles
 
 - python manage.py makemigrations           # Crée les fichiers de migration (à chaque modifs des models)
 - python manage.py migrate                  # Applique les migrations (à chaque modifs des models)
