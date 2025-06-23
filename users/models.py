@@ -73,13 +73,18 @@ def validate_file_extension(value):
 
 
 class Contact(models.Model):
-    full_name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
     observation = models.TextField(blank=True)
     reminder = models.TextField(blank=True)
     document = models.FileField(upload_to='documents/', validators=[validate_file_extension], blank=True, null=True)
     commune = models.ForeignKey(Commune, on_delete=models.CASCADE, related_name="contacts")
+
+    def clean(self):
+        super().clean()
+        if Contact.objects.filter(full_name__iexact=self.full_name).exclude(pk=self.pk).exists():
+            raise ValidationError({'full_name': "Ce nom existe déjà"})
 
     history = HistoricalRecords()
 
