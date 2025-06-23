@@ -44,6 +44,14 @@
         {% endif %}
         <!-- Demande pour accéder à un département ? -->
     </div>
+    <div class="search_container classic_card_container">
+        <h2>Rechercher une commune</h2>
+        <div class="classic-input-search-container">
+            <input type="text" class="classic-input-search search_input" id="commune_search_input" placeholder="Rechercher une commune...">
+            <span class="classic-input-search-icon">🔍</span>
+        </div>
+        <ul id="commune_search_results" class="classic_ul"></ul>
+    </div>
     <div class="account_container classic_card_container">
         <h3>{{ user.username }}</h3>
         <p><span>Rang d'administration :</span> {{ user.rank }}</p>
@@ -59,19 +67,56 @@
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const seen = new Set();
-        document.querySelectorAll("#admin_departments_list .classic_ul_li a").forEach(link => {
-            const name = link.textContent.replace("👑", "").trim();
-            seen.add(name);
+        document.addEventListener("DOMContentLoaded", () => {
+            const seen = new Set();
+            document.querySelectorAll("#admin_departments_list .classic_ul_li a").forEach(link => {
+                const name = link.textContent.replace("👑", "").trim();
+                seen.add(name);
+            });
+            document.querySelectorAll("#all_departments_list .classic_ul_li a").forEach(link => {
+                const name = link.textContent.trim();
+                if (seen.has(name)) {
+                    link.parentElement.remove();
+                }
+            });
         });
-        document.querySelectorAll("#all_departments_list .classic_ul_li a").forEach(link => {
-            const name = link.textContent.trim();
-            if (seen.has(name)) {
-                link.parentElement.remove();
+        document.addEventListener("DOMContentLoaded", () => {
+        const input = document.getElementById("commune_search_input");
+        const resultsList = document.getElementById("commune_search_results");
+
+        input.addEventListener("input", () => {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                resultsList.innerHTML = "";
+                return;
             }
+
+            fetch(`/search-commune/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsList.innerHTML = "";
+
+                    if (data.results.length === 0) {
+                        const li = document.createElement("li");
+                        li.textContent = "Aucune commune trouvée";
+                        resultsList.appendChild(li);
+                        return;
+                    }
+                    
+                    data.results.forEach(commune => {
+                        const li = document.createElement("li");
+                        li.classList.add("classic_ul_li");
+                        li.innerHTML = `
+                            <strong>${commune.name}${commune.is_admin ? " 👑" : ""}</strong> (${commune.department.name})
+                            <a href="/departement/${commune.department.id}/${commune.id}/" class="classic_button">Voir</a>
+                        `;
+                        resultsList.appendChild(li);
+                    });
+
+                });
+            });
         });
-    });
     </script>
 
 {% else %}

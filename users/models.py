@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 class CustomUser(AbstractUser):
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20, unique=True)
 
     RANK_CHOICES = [
         ('admin_global', 'Admin Global'),
@@ -38,17 +38,27 @@ class CustomUser(AbstractUser):
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     history = HistoricalRecords()
+
+    def clean(self):
+        super().clean()
+        if Department.objects.filter(name__iexact=self.name).exclude(pk=self.pk).exists():
+            raise ValidationError({'name': "Ce nom existe déjà"})
 
     def __str__(self):
         return self.name
 
 
 class Commune(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="communes")
     history = HistoricalRecords()
+
+    def clean(self):
+        super().clean()
+        if Commune.objects.filter(name__iexact=self.name).exclude(pk=self.pk).exists():
+            raise ValidationError({'name': "Ce nom existe déjà"})
 
     def __str__(self):
         return f"{self.name} ({self.department.name})"

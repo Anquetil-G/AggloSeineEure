@@ -24,6 +24,7 @@ password: UnSuperC@nardQuiSeBaladeD4ns1Park3Nbois!
 - SQLite (par défaut)
 - HTML / CSS pur
 - django-simple-history
+- django-import-export
 
 ---
 
@@ -42,6 +43,7 @@ password: UnSuperC@nardQuiSeBaladeD4ns1Park3Nbois!
 ## 🗃️ Modèle de données
 
 ### Contact
+
 - `full_name` (obligatoire)
 - `phone_number` (obligatoire)
 - `email` (obligatoire)
@@ -51,13 +53,16 @@ password: UnSuperC@nardQuiSeBaladeD4ns1Park3Nbois!
 - Lien vers une **commune**
 
 ### Commune
+
 - `name`
 - Lien vers un **département**
 
 ### Département
+
 - `name`
 
 ### Custom User
+
 - Hérite du modèle utilisateur Django
 - Champs supplémentaires :
   - `phone_number`
@@ -70,11 +75,11 @@ password: UnSuperC@nardQuiSeBaladeD4ns1Park3Nbois!
 
 ## 🔐 Permissions
 
-| Rôle                  | Lecture                                                                   | Création                                                     | Modification                                                                                 | Suppression                                                                                 |
-|:----------------------|:--------------------------------------------------------------------------|:-------------------------------------------------------------|:---------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------|
-| **Admin global**      | ✅ Tous                                                                  | ✅ Tous                                                      | ✅ Tous                                                                                     | ✅ Tous                                                                                     |
+| Rôle                        | Lecture                                                                  | Création                                                    | Modification                                                                                | Suppression                                                                                 |
+| :--------------------------- | :----------------------------------------------------------------------- | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------ |
+| **Admin global**       | ✅ Tous                                                                  | ✅ Tous                                                      | ✅ Tous                                                                                     | ✅ Tous                                                                                     |
 | **Admin département** | ✅ Ses accessible_departments & administrated_departments & leur contenu | ✅ Communes & contacts ( dans ses administrated_departments) | ✅ Communes & contacts (dans ses administrated_departments) & ses administrated_departments | ✅ Communes & contacts (dans ses administrated_departments) & ses administrated_departments |
-| **Admin commune**     | ✅ Ses accessible_departments & administrated_communes & leur contenu    | ✅ Contacts (dans ses administrated_communes)                | ✅ Contacts (dans ses administrated_communes) & ses administrated_communes                  | ✅ Contacts (dans ses administrated_communes) & ses administrated_communes                  |
-| **Utilisateur simple**| ✅ Ses accessible_departments & leur contenu                             | ❌                                                           | ☑️ Peut modifier observation, reminder et document des contacts                             | ❌                                                                                          |
+| **Admin commune**      | ✅ Ses accessible_departments & administrated_communes & leur contenu    | ✅ Contacts (dans ses administrated_communes)                | ✅ Contacts (dans ses administrated_communes) & ses administrated_communes                  | ✅ Contacts (dans ses administrated_communes) & ses administrated_communes                  |
+| **Utilisateur simple** | ✅ Ses accessible_departments & leur contenu                             | ❌                                                           | ☑️ Peut modifier observation, reminder et document des contacts                           | ❌                                                                                          |
 
 ---

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from ..models import Commune, Department
 from ..forms import CommuneForm
+from django.http import JsonResponse
+from django.db import models
 
 
 def list_communes_on_department(request, pk=None):
@@ -19,6 +21,61 @@ def list_communes_on_department(request, pk=None):
             'administrated_department': administrated_department,
         }
         return render(request, 'department_menu.html', context)
+
+
+def live_search_commune(request):
+    query = request.GET.get('q', '').strip()
+    user = request.user
+    results = []
+
+    if not query:
+        return JsonResponse({'results': []})
+
+    communes_qs = Commune.objects.none()
+
+    if user.rank == 'admin_global':
+        communes_qs = Commune.objects.filter(name__icontains=query)
+
+    elif user.rank == 'admin_department':
+        communes_qs = Commune.objects.filter(
+            name__icontains=query,
+            department__in=user.administrated_departments.all() | user.accessible_departments.all()
+        )
+
+    elif user.rank == 'admin_commune':
+        communes_qs = Commune.objects.filter(
+            name__icontains=query
+        ).filter(
+            models.Q(pk__in=user.administrated_communes.all()) |
+            models.Q(department__in=user.accessible_departments.all())
+        )
+
+    elif user.rank == 'user':
+        communes_qs = Commune.objects.filter(
+            name__icontains=query,
+            department__in=user.accessible_departments.all()
+        )
+
+    for commune in communes_qs.select_related('department').distinct()[:10]:
+        is_admin = False
+        if user.rank == 'admin_global':
+            is_admin = True
+        elif user.rank == 'admin_department' and commune.department in user.administrated_departments.all():
+            is_admin = True
+        elif user.rank == 'admin_commune' and commune in user.administrated_communes.all():
+            is_admin = True
+
+        results.append({
+            'name': commune.name,
+            'id': commune.id,
+            'department': {
+                'name': commune.department.name,
+                'id': commune.department.id
+            },
+            'is_admin': is_admin,
+        })
+
+    return JsonResponse({'results': results})
 
 
 

@@ -10,6 +10,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('register/', user_views.register, name='register'),
     path('edit-account/<int:pk>/', user_views.edit_account, name='edit_account'),
+    path('search-commune/', commune_views.live_search_commune, name='live_search_commune'),
 
     path('departement/<int:pk>/', commune_views.list_communes_on_department, name='department_menu'),
     path('departement/<int:pk>/<int:commune_pk>/', contact_views.list_contacts_on_commune, name='commune_menu'),
