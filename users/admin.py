@@ -80,11 +80,11 @@ class DepartmentAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
 
 
 class CommuneAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
-    actions = [export_hierarchical_csv]
+    pass
 
 
 class ContactAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
-    actions = [export_hierarchical_csv]
+    pass
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
