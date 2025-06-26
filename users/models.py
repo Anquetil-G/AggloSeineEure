@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
     administrated_departments = models.ManyToManyField(
         'users.Department',
         blank=True,
-        related_name='admins'
+        related_name='admins',
     )
 
     administrated_communes = models.ManyToManyField(
@@ -32,6 +32,7 @@ class CustomUser(AbstractUser):
         blank=True,
         related_name='accessible_users'
     )
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.username

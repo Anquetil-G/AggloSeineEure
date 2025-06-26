@@ -21,7 +21,7 @@ def register(request):
 
 def edit_account(request, pk):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
     user = get_object_or_404(User, pk=pk)
     form = CustomUserChangeForm(request.POST or None, instance=user)
     if form.is_valid():

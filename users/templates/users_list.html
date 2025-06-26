@@ -1,0 +1,65 @@
+{% if user.is_authenticated %}
+{% if user.rank == "admin_global" %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+    <a href="{% url 'home' %}" class="classic_come_back classic_button">Retour au menu</a>
+    <div class="classic_card_container">
+        <h1>Utilisateurs</h1>
+        <div class="search_container">
+            <div class="classic-input-search-container">
+                <input type="text" class="classic-input-search search_input" id="user_search_input" placeholder="Rechercher un compte...">
+                <span class="classic-input-search-icon">🔍</span>
+            </div>
+            <ul id="user_search_results" class="classic_ul"></ul>
+        </div>
+        <a href="{% url 'create' 'customUser' %}" class="classic_button">Créer un compte</a>
+        <ul class="classic_ul" id="admin_contacts_list">
+        {% for user in users %}
+            <li class="classic_ul_li">
+                <p href="">{{ user.username }}</p>
+                <div class="classic_ul_li_edit_links">
+                    <a href="{% url 'edit' 'customUser' user.pk %}">Modifier</a>
+                    <a href="{% url 'delete' 'customUser' user.pk %}">Supprimer</a>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const input = document.getElementById("user_search_input");
+        const resultsList = document.getElementById("user_search_results");
+        input.addEventListener("input", () => {
+            const query = input.value.trim();
+            if (query.length === 0) {
+                resultsList.innerHTML = "";
+                return;
+            }
+
+            fetch(`/search-user/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsList.innerHTML = "";
+                    if (data.results.length === 0) {
+                        const li = document.createElement("li");
+                        li.textContent = "Aucune compte trouvé";
+                        resultsList.appendChild(li);
+                        return;
+                    }
+                    
+                    data.results.forEach(user => {
+                        const li = document.createElement("li");
+                        li.classList.add("classic_ul_li");
+                        li.innerHTML = `
+                            <strong>${user.username}</strong>
+                            <a href="{% url 'edit' 'customUser' user.pk %}" class="classic_button">Voir</a>
+                        `;
+                        resultsList.appendChild(li);
+                    });
+                });
+            });
+        });
+    </script>
+{% endif %}
+{% endif %}

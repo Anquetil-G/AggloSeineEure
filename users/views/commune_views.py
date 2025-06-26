@@ -7,7 +7,7 @@ from django.db import models
 
 def list_communes_on_department(request, pk=None):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
     else:
         communes = Commune.objects.filter(department_id=pk)
         administrated_communes = request.user.administrated_communes.filter(department_id=pk)

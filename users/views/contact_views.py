@@ -5,7 +5,7 @@ from ..forms import ContactForm
 
 def list_contacts_on_commune(request, pk=None, commune_pk=None):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
     else:
         department = Department.objects.get(pk=pk)
         commune = Commune.objects.get(pk=commune_pk)
@@ -26,7 +26,7 @@ def list_contacts_on_commune(request, pk=None, commune_pk=None):
 
 def list_one_contact(request, pk=None, commune_pk=None, contact_pk=None):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
     else:
         department = Department.objects.get(pk=pk)
         contact = Contact.objects.get(pk=contact_pk)

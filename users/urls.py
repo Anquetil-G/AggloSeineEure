@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import user_views, department_views, commune_views, contact_views, home_views, global_views
+from .views import user_views, department_views, commune_views, contact_views, home_views, global_views, admin_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -20,6 +20,11 @@ urlpatterns = [
     path('delete/<str:model_name>/<int:pk>/', global_views.generic_delete, name='delete'),
     path('add/<str:model_name>/', global_views.generic_create, name='create'),
     path('add/<str:model_name>/<int:parent_pk>/<str:parent_field>/<str:parent_name>', global_views.generic_create, name='create_with_parent'),
+
+    path('users/', admin_views.list_users, name='user_list'),
+    path('search-user/', admin_views.live_search_user, name='live_search_user'),
+    path('export-bdd/', admin_views.export_hierarchical_csv, name='export_bdd'),
+    path('export-history/', admin_views.export_history, name='export_history'),
 
 
 

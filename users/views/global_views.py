@@ -5,6 +5,7 @@ from django.forms import modelform_factory
 from django.core.exceptions import PermissionDenied
 from users.models import Department, Commune, Contact
 from django.http import HttpResponse
+from ..forms import CustomUserChangeFormAdmin, CustomUserCreationFormAdmin
 import csv
 
 
@@ -46,15 +47,18 @@ def check_permissions(user, model_name, obj=None, post_data=None):
 
 def generic_edit(request, model_name, pk):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
 
     Model = apps.get_model('users', model_name)
     obj = get_object_or_404(Model, pk=pk)
 
     if model_name.lower() != 'contact' and not check_permissions(request.user, model_name, obj=obj):
         raise PermissionDenied("Vous n'avez pas les droits pour modifier cet objet.")
-
-    FormClass = modelform_factory(Model, fields='__all__')
+    
+    if model_name == "customUser":
+        FormClass = CustomUserChangeFormAdmin
+    else:
+        FormClass = modelform_factory(Model, fields='__all__')
 
     if request.method == 'POST':
         form = FormClass(request.POST, request.FILES, instance=obj)
@@ -87,16 +91,23 @@ def generic_edit(request, model_name, pk):
                 if field in form.fields:
                     form.fields[field].widget = forms.HiddenInput()
 
-    return render(request, 'edit.html', {
-        'form': form,
-        'object': obj,
-        'model_name': model_name,
-    })
+    if model_name == "customUser":
+        return render(request, 'edit_user.html', {
+            'form': form,
+            'object': obj,
+            'model_name': model_name,
+        })
+    else:
+        return render(request, 'edit.html', {
+            'form': form,
+            'object': obj,
+            'model_name': model_name,
+        })
 
 
 def generic_delete(request, model_name, pk):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
 
     Model = apps.get_model('users', model_name)
     obj = get_object_or_404(Model, pk=pk)
@@ -113,10 +124,13 @@ def generic_delete(request, model_name, pk):
 
 def generic_create(request, model_name, parent_pk=None, parent_field=None, parent_name=None):
     if not request.user.is_authenticated:
-        return redirect('home')
+        return redirect('login')
 
     Model = apps.get_model('users', model_name)
-    FormClass = modelform_factory(Model, fields='__all__')
+    if model_name == "customUser":
+        FormClass = CustomUserCreationFormAdmin
+    else:
+        FormClass = modelform_factory(Model, fields='__all__')
 
     initial = {}
     if parent_pk and parent_field:
@@ -136,9 +150,15 @@ def generic_create(request, model_name, parent_pk=None, parent_field=None, paren
         form.save()
         return redirect('home')
 
-    return render(request, 'create.html', {
-        'form': form,
-        'model_name': model_name,
-        'object_name': parent_name,
-    })
-
+    if model_name == "customUser":
+        return render(request, 'create_user.html', {
+            'form': form,
+            'model_name': model_name,
+            'object_name': parent_name,
+        })
+    else:
+        return render(request, 'create.html', {
+            'form': form,
+            'model_name': model_name,
+            'object_name': parent_name,
+        })

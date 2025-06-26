@@ -24,6 +24,7 @@ password: UnSuperC@nardQuiSeBaladeD4ns1Park3Nbois!
 - SQLite (par défaut)
 - HTML / CSS pur
 - django-simple-history
+- django-simple-history[diffing]
 - django-import-export
 
 ---

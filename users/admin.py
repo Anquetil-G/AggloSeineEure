@@ -10,7 +10,7 @@ from django.http import HttpResponse
 @admin.action(description="Exporter la base de donnée en CSV")
 def export_hierarchical_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="hierarchical_contacts.csv"'
+    response['Content-Disposition'] = 'attachment; filename="export_bdd.csv"'
 
     writer = csv.writer(response)
     writer.writerow([

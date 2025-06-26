@@ -18,12 +18,40 @@ class CustomUserCreationFormAdmin(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'phone_number', 'rank', 'administrated_departments', 'administrated_communes', 'accessible_departments')
+        widgets = {
+            'administrated_departments': forms.SelectMultiple(attrs={
+                'class': 'classic_input select2',
+                'style': 'width: 100%;'
+            }),
+            'administrated_communes': forms.SelectMultiple(attrs={
+                'class': 'classic_input select2',
+                'style': 'width: 100%;'
+            }),
+            'accessible_departments': forms.SelectMultiple(attrs={
+                'class': 'classic_input select2',
+                'style': 'width: 100%;'
+            }),
+        }
 
 class CustomUserChangeFormAdmin(UserChangeForm):
     password = None
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'phone_number', 'rank', 'administrated_departments', 'administrated_communes', 'accessible_departments')
+        widgets = {
+            'administrated_departments': forms.SelectMultiple(attrs={
+                'class': 'classic_input select2',
+                'style': 'width: 100%;'
+            }),
+            'administrated_communes': forms.SelectMultiple(attrs={
+                'class': 'classic_input select2',
+                'style': 'width: 100%;'
+            }),
+            'accessible_departments': forms.SelectMultiple(attrs={
+                'class': 'classic_input select2',
+                'style': 'width: 100%;'
+            }),
+        }
 
 class DepartmentForm(forms.ModelForm):
     class Meta:

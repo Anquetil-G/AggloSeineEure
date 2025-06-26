@@ -65,59 +65,114 @@
             </form>
         </div>
     </div>
+    {% if user.rank == 'admin_global' %}
+        <div class="admin_panel classic_card_container">
+            <h2>Controle Admin</h2>
+            <div class="links">
+                <a href="{% url 'user_list' %}" class="classic_button">Voir tous les comptes</a>
+                <a href="{% url 'export_bdd' %}" class="classic_button second_button">Exporter les contacts en CSV</a>
+            </div>
+            <h2 class="sTitle">Historique des dernières actions</h2>
+            <form action="{% url 'export_history' %}" method="get">
+                <button type="submit" class="classic_button">Exporter l'historique complet en CSV</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Utilisateur</th>
+                        <th>Objet</th>
+                        <th>Modifications</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in history %}
+                        <tr>
+                            <td>{{ entry.history_date|date:"d/m/Y H:i" }}</td>
+                            <td class="expandable">
+                                {% if entry.history_user %}
+                                    {{ entry.history_user.username }}
+                                {% else %}
+                                    Inconnu
+                                {% endif %}
+                            </td>
+                            <td class="expandable">{{ entry.model_verbose_name }}</td>
+                            <td class="expandable">
+                                <ul>
+                                    {% for change in entry.field_changes %}
+                                        <li>{{ change }}</li>{% if not forloop.last %}<br>{% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 
+    {% verbatim %}
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const seen = new Set();
-            document.querySelectorAll("#admin_departments_list .classic_ul_li a").forEach(link => {
-                const name = link.textContent.replace("👑", "").trim();
-                seen.add(name);
-            });
-            document.querySelectorAll("#all_departments_list .classic_ul_li a").forEach(link => {
-                const name = link.textContent.trim();
-                if (seen.has(name)) {
-                    link.parentElement.remove();
-                }
-            });
-        });
-        document.addEventListener("DOMContentLoaded", () => {
-        const input = document.getElementById("commune_search_input");
-        const resultsList = document.getElementById("commune_search_results");
-
-        input.addEventListener("input", () => {
-            const query = input.value.trim();
-
-            if (query.length === 0) {
-                resultsList.innerHTML = "";
-                return;
-            }
-
-            fetch(`/search-commune/?q=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(data => {
-                    resultsList.innerHTML = "";
-
-                    if (data.results.length === 0) {
-                        const li = document.createElement("li");
-                        li.textContent = "Aucune commune trouvée";
-                        resultsList.appendChild(li);
-                        return;
-                    }
-                    
-                    data.results.forEach(commune => {
-                        const li = document.createElement("li");
-                        li.classList.add("classic_ul_li");
-                        li.innerHTML = `
-                            <strong>${commune.name}${commune.is_admin ? " 👑" : ""}</strong> (${commune.department.name})
-                            <a href="/departement/${commune.department.id}/${commune.id}/" class="classic_button">Voir</a>
-                        `;
-                        resultsList.appendChild(li);
+            document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll(".expandable").forEach(cell => {
+                    cell.addEventListener("click", () => {
+                        cell.classList.toggle("expanded");
                     });
-
                 });
             });
-        });
+            document.addEventListener("DOMContentLoaded", () => {
+                const seen = new Set();
+                document.querySelectorAll("#admin_departments_list .classic_ul_li a").forEach(link => {
+                    const name = link.textContent.replace("👑", "").trim();
+                    seen.add(name);
+                });
+                document.querySelectorAll("#all_departments_list .classic_ul_li a").forEach(link => {
+                    const name = link.textContent.trim();
+                    if (seen.has(name)) {
+                        link.parentElement.remove();
+                    }
+                });
+            });
+            document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("commune_search_input");
+            const resultsList = document.getElementById("commune_search_results");
+
+            input.addEventListener("input", () => {
+                const query = input.value.trim();
+
+                if (query.length === 0) {
+                    resultsList.innerHTML = "";
+                    return;
+                }
+
+                fetch(`/search-commune/?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        resultsList.innerHTML = "";
+
+                        if (data.results.length === 0) {
+                            const li = document.createElement("li");
+                            li.textContent = "Aucune commune trouvée";
+                            resultsList.appendChild(li);
+                            return;
+                        }
+                        
+                        data.results.forEach(commune => {
+                            const li = document.createElement("li");
+                            li.classList.add("classic_ul_li");
+                            li.innerHTML = `
+                                <strong>${commune.name}${commune.is_admin ? " 👑" : ""}</strong> (${commune.department.name})
+                                <a href="/departement/${commune.department.id}/${commune.id}/" class="classic_button">Voir</a>
+                            `;
+                            resultsList.appendChild(li);
+                        });
+
+                    });
+                });
+            });
     </script>
+    {% endverbatim %}
+
 
 {% else %}
     <div class="home_no_connexion">
