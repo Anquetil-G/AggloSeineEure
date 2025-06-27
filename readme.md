@@ -1,8 +1,3 @@
-Admin :
-username: anquetil.gabin.080509
-email: 1anquetil.gabin@gmail.com
-password: UnSuperC@nardQuiSeBaladeD4ns1Park3Nbois!
-
 # Projet de gestion de contacts
 
 ---
